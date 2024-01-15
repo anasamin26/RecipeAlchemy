@@ -20,7 +20,7 @@ import RecipeNotFound from "./RecpieNotFound";
           const shouldFetchFreshData = !isFromRecipeDetails && !localStorage.getItem('recipeData');
           
           if (shouldFetchFreshData) {
-            const response = await axios.post('http://127.0.0.1:5000/suggestTop5Recipes', { NER });
+            const response = await axios.post('https://recipe-alchemy-backend.onrender.com/suggestTop5Recipes', { NER });
             setRecipeData(response.data);
             if (response.data.length === 0) {
               setNoRecipes(true);
