@@ -23,6 +23,9 @@ const recipeController=require('../controller/recipeController');
 //defining routes now
 
 //trying to upload the file in csv to be inserted in the db but didnt work so i used direct import using the mongodb compas
+recipes.get('/',(req,res)=>{
+    res.send('Backend Working Fine');
+})
 recipes.post('/importRecipes',upload.single('file'),recipeController.importRecipes)
 
 //lets just get some recipes

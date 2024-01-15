@@ -1,6 +1,7 @@
 const { MongoClient } = require("mongodb");
+require('dotenv').config();
 
-const uri = process.env.ATLAS_URI;
+const uri = process.env.DBHOST;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 let _db;
