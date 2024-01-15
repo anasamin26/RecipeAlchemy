@@ -25,7 +25,7 @@ import RecipeNotFound from "./RecpieNotFound";
             if (response.data.length === 0) {
               setNoRecipes(true);
             }
-            setSkeleton(false);
+            // setSkeleton(false);
     
             localStorage.setItem('recipeData', JSON.stringify(response.data));
           } else {
