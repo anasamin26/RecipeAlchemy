@@ -61,63 +61,67 @@ const shuffle = (array) => {
 const squareData = [
   {
     id: 1,
-    src:"https://images.unsplash.com/photo-1608897013039-887f21d8c804?q=80&w=2792&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-},
+    src:require("../assets/frontpagepics/1.avif")
+  },
   {
     id: 2,
-    src: "https://images.unsplash.com/photo-1589302168068-964664d93dc0?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-},
+    src:require("../assets/frontpagepics/2.avif")
+  },
   {
     id: 3,
-    src: "https://images.unsplash.com/photo-1521305916504-4a1121188589?q=80&w=2960&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    src:require("../assets/frontpagepics/3.avif")
   },
   {
     id: 4,
-    src:"https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?q=80&w=2813&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    src:require("../assets/frontpagepics/4.avif")
 },
   {
     id: 5,
-    src:"https://images.unsplash.com/photo-1444731961956-751ed90465a5?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    src:require("../assets/frontpagepics/5.avif")
 },
   {
     id: 6,
-    src:"https://images.unsplash.com/photo-1603532648955-039310d9ed75?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    src:require("../assets/frontpagepics/6.avif")
 },
   {
     id: 7,
-    src:"https://images.unsplash.com/photo-1592415486689-125cbbfcbee2?q=80&w=2825&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    src:require("../assets/frontpagepics/7.avif")
 },
   {
     id: 8,
-src:"https://images.unsplash.com/photo-1597428682757-0216d6532b36?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",  },
+    src:require("../assets/frontpagepics/8.avif")
+  },
   {
     id: 9,
-    src:"https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    src:require("../assets/frontpagepics/9.avif")
 },
   {
     id: 10,
-src:"https://images.unsplash.com/photo-1610562275255-03b7fa0d4655?q=80&w=2861&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    src:require("../assets/frontpagepics/10.avif")
 },
   {
     id: 11,
-src:"https://images.unsplash.com/photo-1622003275933-fc87f54913ab?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",  },
+    src:require("../assets/frontpagepics/11.avif")
+  },
   {
     id: 12,
-    src:"https://images.unsplash.com/photo-1506084868230-bb9d95c24759?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    src:require("../assets/frontpagepics/12.avif")
   },
   {
     id: 13,
-    src:"https://images.unsplash.com/photo-1497534446932-c925b458314e?q=80&w=2872&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    src:require("../assets/frontpagepics/13.avif")
 },
   {
     id: 14,
-src:"https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",  },
+    src:require("../assets/frontpagepics/14.avif")
+  },
   {
     id: 15,
-src:"https://images.unsplash.com/photo-1606914501449-5a96b6ce24ca?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",  },
+    src:require("../assets/frontpagepics/15.avif")
+  },
   {
     id: 16,
-    src:"https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    src:require("../assets/frontpagepics/16.avif")
 },
 ];
 
