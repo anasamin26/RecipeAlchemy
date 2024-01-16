@@ -11,7 +11,7 @@ export default function RecipeInput() {
     const navigate = useNavigate(); 
 
     useEffect(() => {
-        // Scroll to the last added input field
+        // Scrolling to the last added input field
         if (lastInputRef.current) {
           lastInputRef.current.scrollIntoView({ behavior: 'smooth' });
         }

@@ -1,6 +1,7 @@
 import { PaperClipIcon } from '@heroicons/react/20/solid'
 import { useEffect } from 'react';
 import { useLocation,useNavigate } from 'react-router-dom';
+import Nav from './Navbar';
 
 export default function RecipeDetails() {
     const location = useLocation();
@@ -19,7 +20,8 @@ export default function RecipeDetails() {
          navigate('/recipe-display', { state: { NER:NER } });   
     }
     return (
-
+      <>
+  <Nav/>
 <div class="max-w-device p-6  border border-gray-200 rounded-lg scroll-smooth ">
 <div
           className="absolute inset-x-0 -top-10 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
@@ -32,8 +34,8 @@ export default function RecipeDetails() {
                 'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
             }}
           />
-        </div>    
-<button type="button"  onClick={()=>{handleBackClick()}} class="text-white mb-2 bg-purple-700 hover:bg-purple-800 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800">
+  </div>    
+<button type="button"  onClick={()=>{handleBackClick()}} class="text-white mb-5 bg-purple-700 hover:bg-purple-800 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800">
 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"  fill="white"><path d="M15.293 3.293 6.586 12l8.707 8.707 1.414-1.414L9.414 12l7.293-7.293-1.414-1.414z"/></svg></button>
           <div className="px-4 sm:px-0">
             <h3 className="text-4xl font-bold leading-10 text-gray-900 ">Recipe Details</h3>
@@ -80,5 +82,6 @@ export default function RecipeDetails() {
             </dl>
           </div>
         </div>
+        </>
       )
 }

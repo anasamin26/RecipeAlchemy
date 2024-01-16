@@ -3,6 +3,7 @@ import { useLocation,useNavigate } from "react-router-dom";
 import SkeletonLoader from "./SkeletonLoader";
 import axios from 'axios';
 import RecipeNotFound from "./RecpieNotFound";
+import Nav from "./Navbar";
 
   export default function RecipeDisplay() {
     const location = useLocation();
@@ -45,7 +46,7 @@ import RecipeNotFound from "./RecpieNotFound";
         localStorage.removeItem('recipeData');
       }
       return () => {
-        if (window.location.pathname === '/') {
+        if (window.location.pathname === '/search-recipe') {
           localStorage.removeItem('recipeData');
         }
       };
@@ -57,16 +58,25 @@ import RecipeNotFound from "./RecpieNotFound";
         }
     }
     const handleBackClick=()=>{       
-        navigate('/');
+        navigate('/search-recipe');
        
 }
     return (
     skeleton ? (
+      <>
+        <Nav/>
         <SkeletonLoader/>
+        </>
     ):(
         <>
-        {noRecipes?(<RecipeNotFound/>):(
+        {noRecipes?(
+        <>
+        <Nav/>
+        <RecipeNotFound/>
+        </>
+        ):(
             <>
+            <Nav/>
             <button type="button"  onClick={()=>{handleBackClick()}} class="text-white mt-5 ml-5 bg-purple-700 hover:bg-purple-800 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800">
          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"  fill="white"><path d="M15.293 3.293 6.586 12l8.707 8.707 1.414-1.414L9.414 12l7.293-7.293-1.414-1.414z"/></svg>
         </button>

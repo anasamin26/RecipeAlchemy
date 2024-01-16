@@ -2,6 +2,7 @@ import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import RecipeInput from './RecipeInput'
+import Nav from './Navbar'
 const user = {
   name: 'Tom Cook',
   email: 'tom@example.com',
@@ -28,6 +29,8 @@ function classNames(...classes) {
 export default function Homepage() {
   return (
     <>
+       <Nav/>
+
       {/*
         This example requires updating your template:
 
@@ -39,7 +42,7 @@ export default function Homepage() {
       <div className="min-h-full">
         <header className="bg-white shadow">
           <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-            <h1 className="text-3xl font-bold tracking-tight text-gray-900">Add Ingredients</h1>
+            <h1 className="text-3xl font-bold tracking-tight text-gray-900">Enter Ingredients</h1>
           </div>
         </header>
         <main>
