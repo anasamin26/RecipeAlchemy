@@ -1,79 +1,80 @@
 import React, { useState } from 'react';
 import BubbleText from '../../aesthetics/BubbleText';
 
-
 const Signup = () => {
-    const [show,setShow]=useState(true);
-    const [email, setEmail] = useState('');
+  const [show, setShow] = useState(true);
+  const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
 
   const validateEmail = () => {
-    if (!email.includes('@') || !email.includes('.com' )) {
+    if (!email.includes('@') || !email.includes('.com')) {
       setEmailError('Invalid email address');
     } else {
       setEmailError('');
     }
-  };    
+  };
+
   return (
-    <div>
-      <div className="bg-purple-500 absolute top-0 left-0 bg-gradient-to-b from-gray-900 via-gray-900 to-purple-600 bottom-0 leading-5 h-full w-full overflow-hidden"></div>
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-900 to-purple-600">
       <div className="relative min-h-screen sm:flex sm:flex-row justify-center bg-transparent rounded-3xl shadow-xl">
-      <div className=' flex self-center  mb-40 z-10 rounded-3xl'>
-  <h1 className='text-purple-300 text-9xl font-secondary'>R</h1>   
-  <h1 className='mt-12 text-purple-300 text-6xl font-secondary'>e</h1>   
-  <h1 className='mt-12 text-purple-300 text-6xl font-secondary'>c</h1>   
-  <h1 className='mt-12 text-purple-300 text-6xl font-secondary'>i</h1>
-  <h1 className='mt-12 text-purple-300 text-6xl font-secondary'>p</h1>   
-  <h1 className='mt-12 text-purple-300 text-6xl font-secondary'>e</h1>   
-  <h1 className='text-white text-9xl font-secondary' >A</h1>   
-  <h1 className='mt-12 text-white text-6xl font-secondary'>l</h1>   
-  <h1 className='mt-12 text-white text-6xl font-secondary'>c</h1>   
-  <h1 className='mt-12 text-white text-6xl font-secondary'>h</h1>
-  <h1 className='mt-12 text-white text-6xl font-secondary'>e</h1>   
-  <h1 className='mt-12 text-white text-6xl font-secondary'>m</h1>  
-  <h1 className='mt-12 text-white text-6xl font-secondary'>y</h1>    
-</div>
-        <div className="flex-col flex self-center lg:px-14 sm:max-w-4xl xl:max-w-md z-10  mb-40">
-          <div className="self-start hidden lg:flex flex-col text-gray-300">
-            <h1 className="my-3 font-semibold text-5xl mr-12">
-            <BubbleText text="Create an Account"/>
+        <div className="flex self-center mb-8 sm:block hidden">
+        <div className=' flex self-center  mb-40 z-10 rounded-3xl'>
+            <h1 className='text-purple-300 text-9xl font-secondary'>R</h1>   
+            <h1 className='mt-12 text-purple-300 text-6xl font-secondary'>e</h1>   
+            <h1 className='mt-12 text-purple-300 text-6xl font-secondary'>c</h1>   
+            <h1 className='mt-12 text-purple-300 text-6xl font-secondary'>i</h1>
+            <h1 className='mt-12 text-purple-300 text-6xl font-secondary'>p</h1>   
+            <h1 className='mt-12 text-purple-300 text-6xl font-secondary'>e</h1>   
+            <h1 className='text-white text-9xl font-secondary' >A</h1>   
+            <h1 className='mt-12 text-white text-6xl font-secondary'>l</h1>   
+            <h1 className='mt-12 text-white text-6xl font-secondary'>c</h1>   
+            <h1 className='mt-12 text-white text-6xl font-secondary'>h</h1>
+            <h1 className='mt-12 text-white text-6xl font-secondary'>e</h1>   
+            <h1 className='mt-12 text-white text-6xl font-secondary'>m</h1>  
+            <h1 className='mt-12 text-white text-6xl font-secondary'>y</h1>    
+        </div>
+        </div>
+        <div className="flex-col flex self-center lg:px-14 sm:max-w-4xl xl:max-w-md z-10 mb-16">
+          <div className="self-start lg:flex flex-col text-gray-300">
+            <h1 className="my-3 font-semibold text-5xl lg:mr-12">
+              <BubbleText text="Create an Account" />
             </h1>
             <p className="pr-3 text-sm opacity-75">Embark on a journey of flavors! Join us and discover a world of delightful recipes with just a sign-up away.</p>
           </div>
         </div>
 
-        <div className="flex justify-center self-center z-10 mb-40">
-          <div className="p-12 bg-white mx-auto rounded-3xl w-96">
+        <div className="flex justify-center self-center z-10 mb-16">
+          <div className="p-8 bg-white mx-auto rounded-3xl w-96">
             <div className="mb-7">
               <h3 className="font-semibold text-2xl text-gray-800">Register</h3>
-              <p className="text-gray-400">Alreay have an account? <a href="/signin" className="text-sm text-purple-700 hover:text-purple-700 underline">Sign In</a></p>
+              <p className="text-gray-400">Already have an account? <a href="/signin" className="text-sm text-purple-700 hover:text-purple-700 underline">Sign In</a></p>
             </div>
 
             <div className="space-y-6">
-            <div className="flex mb-1">
-            <input
-                className="w-1/2 sm:w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-purple-400"
-                type="text"
-                placeholder="First Name"
-            />
-            <input
-                className="w-1/2 sm:w-full ml-2 text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-purple-400"
-                type="text"
-                placeholder="Last Name"
-            />
-            </div>
-            <div>
-      <input
-        className={`w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-purple-400 ${emailError ? 'border-red-500' : ''}`}
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        onBlur={validateEmail}
-      />
-      {emailError && <p className="text-red-500 text-sm mt-1">{emailError}</p>}
-    </div>
-              <div className="relative" >
+              <div className="flex flex-col mb-4">
+                <input
+                  className="text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-purple-400"
+                  type="text"
+                  placeholder="First Name"
+                />
+                <input
+                  className="mt-2 text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-purple-400"
+                  type="text"
+                  placeholder="Last Name"
+                />
+              </div>
+              <div>
+                <input
+                  className={`w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-purple-400 ${emailError ? 'border-red-500' : ''}`}
+                  type="email"
+                  placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  onBlur={validateEmail}
+                />
+                {emailError && <p className="text-red-500 text-sm mt-1">{emailError}</p>}
+              </div>
+              <div className="relative">
                 <input
                   placeholder="Password"
                   type={show ? 'password' : 'text'}
@@ -81,8 +82,8 @@ const Signup = () => {
                 />
                 <div className="flex items-center absolute inset-y-0 right-0 mr-3 text-sm leading-5">
                   <svg
-                    onClick="show = !show"
-                    className={{ hidden: !show, block: show, 'h-4 text-purple-700': true }}
+                    onClick={() => setShow(!show)}
+                    className={`h-4 text-purple-700 ${show ? 'hidden' : 'block'}`}
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 576 512"
@@ -91,8 +92,8 @@ const Signup = () => {
                   </svg>
 
                   <svg
-                    onClick="show = !show"
-                    className={{ block: !show, hidden: show, 'h-4 text-purple-700': true }}
+                    onClick={() => setShow(!show)}
+                    className={`h-4 text-purple-700 ${show ? 'block' : 'hidden'}`}
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 640 512"
@@ -149,10 +150,10 @@ const Signup = () => {
         </div>
       </div>
 
-
       <svg className="absolute bottom-0 left-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
         <path fill="#fff" fillOpacity="1" d="M0,0L40,42.7C80,85,160,171,240,197.3C320,224,400,192,480,154.7C560,117,640,75,720,74.7C800,75,880,117,960,154.7C1040,192,1120,224,1200,213.3C1280,203,1360,149,1400,122.7L1440,96L1440,320L1400,320C1360,320,1280,320,1200,320C1120,320,1040,320,960,320C880,320,800,320,720,320C640,320,560,320,480,320C400,320,320,320,240,320C160,320,80,320,40,320L0,320Z"></path>
       </svg>
+
       <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.js"></script>
     </div>
   );
