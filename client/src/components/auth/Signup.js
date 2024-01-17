@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
 import BubbleText from '../../aesthetics/BubbleText';
-
+import axios from 'axios';
+import { useAuth } from './AuthContext';
+import { useNavigate } from 'react-router-dom';
 const Signup = () => {
   const [show, setShow] = useState(true);
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
+  const [firstName,setFirstName]=useState('');
+  const [lastName,setLastName]=useState('');
+  const [password,setPassword]=useState('');
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
   const validateEmail = () => {
     if (!email.includes('@') || !email.includes('.com')) {
@@ -14,6 +21,17 @@ const Signup = () => {
     }
   };
 
+  const  handleSignup=async(e)=>{
+    e.preventDefault();
+    try{
+    const response = await axios.post('https://recipe-alchemy-backend.onrender.com/signup', { firstName, lastName, email, password });
+    
+    login();
+    navigate('/search-recipe')}
+    catch(error){
+      console.error("Error Occured in SignUp",error);
+    }
+  }
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-900 to-purple-600">
       <div className="relative min-h-screen sm:flex sm:flex-row justify-center bg-transparent rounded-3xl shadow-xl">
@@ -56,11 +74,14 @@ const Signup = () => {
                   className="text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-purple-400"
                   type="text"
                   placeholder="First Name"
+                  onChange={(e) => setFirstName(e.target.value)}
+
                 />
                 <input
                   className="mt-2 text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-purple-400"
                   type="text"
                   placeholder="Last Name"
+                  onChange={(e) => setLastName(e.target.value)}
                 />
               </div>
               <div>
@@ -79,6 +100,7 @@ const Signup = () => {
                   placeholder="Password"
                   type={show ? 'password' : 'text'}
                   className="text-sm text-black px-4 py-3 rounded-lg w-full bg-gray-200 focus:bg-gray-100 border border-gray-200 focus:outline-none focus:border-purple-400"
+                  onChange={(e) => setPassword(e.target.value)}
                 />
                 <div className="flex items-center absolute inset-y-0 right-0 mr-3 text-sm leading-5">
                   <svg
@@ -106,7 +128,8 @@ const Signup = () => {
                 <button
                   type="submit"
                   className="w-full flex justify-center bg-purple-600 hover:bg-purple-800 text-gray-100 p-3 rounded-lg tracking-wide font-semibold cursor-pointer transition ease-in duration-500"
-                >
+                  onClick={(event)=>{handleSignup(event)}}
+               >
                   Sign Up
                 </button>
               </div>
