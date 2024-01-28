@@ -37,6 +37,7 @@ recipes.get('/Recipe/:id',recipeController.getSingleRecipe);
 //lets get the top 5 recipies based on user searched ingrediants
 recipes.post('/suggestTop5Recipes',recipeController.suggestTop5Recipes);
 
+recipes.post('/suggestTop5RecipesbyTitle',recipeController.suggestTop5RecipesByTitle);
 
 
 //exporting routes

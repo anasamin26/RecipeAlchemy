@@ -81,71 +81,123 @@ const getSingleRecipe = async (req, res) => {
     }
   };
 
-  const suggestTop5Recipes = async (req, res) => {
-    try {
-      let userNER = req.body.NER;
-      console.log(userNER);
-  
-      // Remove duplicates from the userNER array
-      userNER = [...new Set(userNER)];
-  
-      const db_connect = dbo.getDb();
-  
-      if (!db_connect) {
-        console.error('Database connection not established');
-        return res.status(500).json({ status: 500, success: false, message: 'Database connection not established' });
-      }
-  
-      // Ensure exact match of NER array
-      const query = { NER: { $eq: userNER } };
-      const exactMatchRecipe = await db_connect.collection('Recipes').findOne(query);
-  
-      if (exactMatchRecipe) {
-        // If exact match found, return only that recipe
-        res.json([exactMatchRecipe]);
-      } else {
-        // If no exact match, proceed with high match logic
-  
-        const batchSize = 1000;
-        const promises = [];
-  
-        for (let skip = 0; skip < 140000; skip += batchSize) {
-          const promise = db_connect.collection('Recipes').find({ "NER": { $all: userNER } }).skip(skip).limit(batchSize).toArray();
-          promises.push(promise);
-        }
-  
-        const batches = await Promise.all(promises);
-        const allRecipes = batches.flat();
-  
-        // Separate recipes with 100% NER match and 90% or higher NER match
-        const highMatchRecipes = [];
-  
-        allRecipes.forEach(recipe => {
-          const matchingNERCount = recipe.NER.filter(ner => userNER.includes(ner)).length;
-          const percentageMatching = (matchingNERCount / userNER.length) * 100;
-  
-          if (percentageMatching >= 90) {
-            highMatchRecipes.push(recipe);
-          }
-        });
-  
-        // Sort the high match recipes by the number of matching ingredients in descending order
-        highMatchRecipes.sort((a, b) => b.NER.filter(ing => userNER.includes(ing)).length - a.NER.filter(ing => userNER.includes(ing)).length);
-  
-        // Return the top 5 matching recipes
-        const top5Recipes = highMatchRecipes.slice(0, 5);
-  
-        res.json(top5Recipes);
-      }
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ status: 500, success: false, message: 'Internal server error' });
+ const suggestTop5Recipes = async (req, res) => {
+  try {
+    let userNER = req.body.NER;
+    console.log(userNER);
+
+    userNER = [...new Set(userNER)];
+
+    const db_connect = dbo.getDb();
+
+    if (!db_connect) {
+      console.error('Database connection not established');
+      return res.status(500).json({ status: 500, success: false, message: 'Database connection not established' });
     }
-  };
+
+    const pipeline = [
+      { $match: { "NER": { $all: userNER } } },
+      {
+        $project: {
+          recipe: "$$ROOT",
+          matchingNERCount: { $size: { $setIntersection: ["$NER", userNER] } },
+          totalNERCount: { $size: "$NER" }
+        }
+      },
+      {
+        $addFields: {
+          percentageMatching: { $multiply: [{ $divide: ["$matchingNERCount", "$totalNERCount"] }, 100] }
+        }
+      },
+      { $sort: { percentageMatching: -1 } },
+      { $limit: 5 }
+    ];
+
+    const matchedRecipes = await db_connect.collection('Recipes').aggregate(pipeline).toArray();
+
+    if (matchedRecipes.length < 5) {
+      // If there are less than 5 recipes, fill the remaining slots with additional matches
+      const additionalRecipes = await db_connect.collection('Recipes')
+        .find({ "NER": { $all: userNER } })
+        .limit(5 - matchedRecipes.length)
+        .toArray();
+
+      matchedRecipes.push(...additionalRecipes);
+    }
+
+    // Extract the original recipes without additional fields
+    const top5Recipes = matchedRecipes.map(recipe => recipe.recipe);
+
+    res.json(top5Recipes);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ status: 500, success: false, message: 'Internal server error' });
+  }
+};
+
+const suggestTop5RecipesByTitle = async (req, res) => {
+  try {
+    const userTitle = req.body.title;
+    console.log(userTitle);
+
+    const db_connect = dbo.getDb();
+
+    if (!db_connect) {
+      console.error('Database connection not established');
+      return res.status(500).json({ status: 500, success: false, message: 'Database connection not established' });
+    }
+
+    const pipeline = [
+      { $match: { "title": userTitle } },
+      {
+        $project: {
+          recipe: "$$ROOT",
+          matchingTitleCount: { $cond: { if: { $eq: ["$title", userTitle] }, then: 1, else: 0 } }
+        }
+      },
+      { $sort: { matchingTitleCount: -1 } },
+      { $limit: 5 }
+    ];
+
+    const matchedRecipes = await db_connect.collection('Recipes').aggregate(pipeline).toArray();
+
+    if (matchedRecipes && matchedRecipes.length > 0) {
+      const additionalRecipes90 = await db_connect.collection('Recipes')
+        .find({ "title": { $regex: userTitle, $options: 'i' } }) // Case-insensitive partial match
+        .limit(5 - matchedRecipes.length)
+        .toArray();
+
+      matchedRecipes.push(...additionalRecipes90.filter(recipe => recipe !== null));
+
+      if (matchedRecipes.length < 5) {
+        const additionalRecipes80 = await db_connect.collection('Recipes')
+          .find({ "title": { $regex: userTitle, $options: 'i' } }) // Case-insensitive partial match
+          .limit(5 - matchedRecipes.length)
+          .toArray();
+
+        matchedRecipes.push(...additionalRecipes80.filter(recipe => recipe !== null));
+      }
+    }
+
+    const top5Recipes = matchedRecipes
+      ? matchedRecipes.map(recipe => (recipe ? recipe.recipe : null)).filter(recipe => recipe !== null)
+      : [];
+
+    res.json(top5Recipes);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ status: 500, success: false, message: 'Internal server error' });
+  }
+};
+
+
+
   
   
   
   
   
   
-module.exports = { importRecipes, getAllRecipes,getSingleRecipe,suggestTop5Recipes};
+  
+  
+module.exports = { importRecipes, getAllRecipes,getSingleRecipe,suggestTop5Recipes,suggestTop5RecipesByTitle};

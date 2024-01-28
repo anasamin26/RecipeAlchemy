@@ -1,21 +1,20 @@
-const User = require("../models/User");
 const { createSecretToken } = require("../utils/SecretToken");
 const bcrypt = require("bcryptjs");
 const dbo = require("../database/dbcon");
+const jwt = require("jsonwebtoken");
+const { ObjectId } = require('mongodb');
 
 module.exports.Signup = async (req, res) => {
   try {
-    const { firstName, lastName, email, password } = req.body;
+    const { firstName, lastName,username, email, password, friends} = req.body;
 
-    // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return res.status(400).json({ message: "Invalid email format", success: false });
     }
 
-    // Check if the user already exists
     const db_connect = await dbo.getDb();
-    const existingUser = await db_connect.collection("Users").findOne({ email });
+    const existingUser = await db_connect.collection("Users").findOne({ email,username });
     if (existingUser) {
       return res.status(409).json({ message: "User already exists", success: false });
     }
@@ -25,28 +24,24 @@ module.exports.Signup = async (req, res) => {
       return res.status(500).json({ status: 500, success: false, message: 'Database connection not established' });
     }
 
-    // Hash the password using bcrypt
     const hashedPassword = await bcrypt.hash(password, 12);
-
-    // Create a user object
+    
     const user = {
       firstName,
       lastName,
+      username,
       email,
       password: hashedPassword,
+      friends,
       createdAt: new Date().toISOString()
     };
 
-    // Insert the user into the database
     const insertResult = await db_connect.collection("Users").insertOne(user);
 
-    // Retrieve the inserted user's ID
     const userId = insertResult.insertedId;
 
-    // Create a token using the user's ID
     const token = createSecretToken(userId);
 
-    // Set the token in a cookie
     res.cookie("token", token, {
       withCredentials: true,
       httpOnly: false,
@@ -78,25 +73,48 @@ module.exports.SignIn = async (req, res) => {
       return res.status(400).json({ message: "User does not exist", success: false });
     }
 
-    // Compare the entered password with the stored hashed password
     const isPasswordValid = await bcrypt.compare(password, existingUser.password);
 
     if (!isPasswordValid) {
       return res.status(400).json({ message: "Invalid password", success: false });
     }
     const token = createSecretToken(existingUser._id);
-
-    // Set the token in a cookie
-    res.cookie("token", token, {
-      withCredentials: true,
-      httpOnly: false,
-    });
-
-
-    res.status(200).json({ message: "User signed in successfully", success: true, user: existingUser });
+     res.cookie("token", token, {
+       withCredentials: true,
+       httpOnly: false,
+     });
+     res.status(201).json({ message: "User logged in successfully", success: true });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+
+module.exports.userVerification = async (req, res) => {
+  const token = req.cookies.token;
+  if (!token) {
+    console.log("No Token found");
+    return res.json({ status: false });
+  }
+  console.log("Token to verify ");
+
+  try {
+    const data = await jwt.verify(token, process.env.TOKEN_KEY);
+    console.log("Token got in success ");
+
+    const db_connect = await dbo.getDb();
+    const user = await db_connect.collection("Users").findOne({ _id: new ObjectId(data.id) });
+
+    if (user) {
+      return res.json({ status: true, user: user });
+    } else {
+      return res.json({ status: false });
+    }
+  } catch (error) {
+    console.error("Error verifying token:", error);
+    return res.json({ status: false });
+  }
+};
+
 
