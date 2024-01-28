@@ -3,6 +3,7 @@ import BubbleText from '../../aesthetics/BubbleText';
 import axios from 'axios';
 import { useAuth } from './AuthContext';
 import { useNavigate } from 'react-router-dom';
+
 const Signup = () => {
   const [show, setShow] = useState(true);
   const [email, setEmail] = useState('');
@@ -10,6 +11,8 @@ const Signup = () => {
   const [firstName,setFirstName]=useState('');
   const [lastName,setLastName]=useState('');
   const [password,setPassword]=useState('');
+  const [username,setUsername]=useState('');
+  const [friends,setFriends]=useState([]);
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -21,17 +24,19 @@ const Signup = () => {
     }
   };
 
-  const  handleSignup=async(e)=>{
+  const handleSignup = async (e) => {
     e.preventDefault();
-    try{
-    const response = await axios.post('https://recipe-alchemy-backend.onrender.com/signup', { firstName, lastName, email, password });
-    
-    login();
-    navigate('/search-recipe')}
-    catch(error){
-      console.error("Error Occured in SignUp",error);
+    try {
+      const response = await axios.post('http://localhost:8080/signup', { firstName, lastName,username,email, password,friends }, { withCredentials: true });
+      if (response.data.success) {
+      login();  
+      navigate('/search-recipe');  
+      } 
+    } catch (error) {
+      console.error(error);
     }
-  }
+  };  
+  
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-900 to-purple-600">
       <div className="relative min-h-screen sm:flex sm:flex-row justify-center bg-transparent rounded-3xl shadow-xl">
@@ -69,21 +74,30 @@ const Signup = () => {
             </div>
 
             <div className="space-y-6">
-              <div className="flex flex-col mb-4">
+            <div className="flex mb-4">
+    <input
+      className="flex-1 max-w-40 text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-purple-400"
+      type="text"
+      placeholder="First Name"
+      onChange={(e) => setFirstName(e.target.value)}
+    />
+    <input
+      className="ml-0.5 flex-1 max-w-40 text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-purple-400"
+      type="text"
+      placeholder="Last Name"
+      onChange={(e) => setLastName(e.target.value)}
+    />
+  </div>
+  <div>
                 <input
-                  className="text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-purple-400"
+                  className={`w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-purple-400 ${emailError ? 'border-red-500' : ''}`}
                   type="text"
-                  placeholder="First Name"
-                  onChange={(e) => setFirstName(e.target.value)}
-
-                />
-                <input
-                  className="mt-2 text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-purple-400"
-                  type="text"
-                  placeholder="Last Name"
-                  onChange={(e) => setLastName(e.target.value)}
+                  placeholder="username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                 />
               </div>
+
               <div>
                 <input
                   className={`w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-purple-400 ${emailError ? 'border-red-500' : ''}`}
@@ -134,14 +148,14 @@ const Signup = () => {
                 </button>
               </div>
               <div className="flex items-center justify-center space-x-2 my-5">
-                <span className="h-px w-16 bg-gray-100"></span>
-                <span className="text-gray-300 font-normal">or</span>
-                <span className="h-px w-16 bg-gray-100"></span>
+                <span className="h-px w-16 bg-gray-300"></span>
+                <span className="text-gray-700 font-normal">or</span>
+                <span className="h-px w-16 bg-gray-300"></span>
               </div>
               <div className="flex justify-center gap-5 w-full">
                 <button
                   type="submit"
-                  className="w-full flex items-center justify-center mb-6 md:mb-0 border border-gray-300 hover:border-gray-900 hover:bg-gray-900 text-sm text-gray-500 p-3 rounded-lg tracking-wide font-medium cursor-pointer transition ease-in duration-500"
+                  className="w-full flex items-center hover:text-white justify-center mb-6 md:mb-0 border border-gray-300 hover:border-gray-900 hover:bg-gray-900 text-sm text-gray-500 p-3 rounded-lg tracking-wide font-medium cursor-pointer transition ease-in duration-500"
                 >
                   <svg
                     className="w-4 mr-2"

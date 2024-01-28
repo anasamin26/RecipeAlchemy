@@ -7,7 +7,7 @@ import Nav from "./Navbar";
 
   export default function RecipeDisplay() {
     const location = useLocation();
-    const { NER } = location.state;
+    const { NER,title,searchOption } = location.state;
     const [skeleton,setSkeleton]=useState(true);  
     const [recipeData, setRecipeData] = useState([]);
     const [noRecipes,setNoRecipes]=useState(false);
@@ -18,43 +18,81 @@ import Nav from "./Navbar";
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const shouldFetchFreshData = !isFromRecipeDetails && !localStorage.getItem('recipeData');
-          
-          if (shouldFetchFreshData) {
-            const response = await axios.post('https://recipe-alchemy-backend.onrender.com/suggestTop5Recipes', { NER });
-            setRecipeData(response.data);
-            if (response.data.length === 0) {
-              setNoRecipes(true);
-            }
-            setSkeleton(false);
+          if (searchOption === "Ingredients") {
+            const shouldFetchFreshData = !isFromRecipeDetails && !localStorage.getItem('recipeData');
     
-            localStorage.setItem('recipeData', JSON.stringify(response.data));
-          } else {
-            const storedData = localStorage.getItem('recipeData');
-            setRecipeData(JSON.parse(storedData));
-            setSkeleton(false);
+            if (shouldFetchFreshData) {
+              const response = await axios.post('http://localhost:8080/suggestTop5Recipes', { NER });
+    
+              if (response.data && response.data.length > 0) {
+                setRecipeData(response.data);
+                setNoRecipes(false);
+                setSkeleton(false);
+                localStorage.setItem('recipeData', JSON.stringify(response.data));
+              } else {
+                setNoRecipes(true);
+                setSkeleton(false);
+              }
+            } else {
+              const storedData = localStorage.getItem('recipeData');
+              if (storedData) {
+                setRecipeData(JSON.parse(storedData));
+                setSkeleton(false);
+              } else {
+                setNoRecipes(true);
+                setSkeleton(false);
+              }
+            }
+          } else if (searchOption === "Title") {
+            const shouldFetchFreshData = !isFromRecipeDetails && !localStorage.getItem('recipeData');
+    
+            if (shouldFetchFreshData) {
+              const response = await axios.post('http://localhost:8080/suggestTop5RecipesbyTitle', { title });
+    
+              if (response.data && response.data.length > 0) {
+                setRecipeData(response.data);
+                setNoRecipes(false);
+                setSkeleton(false);
+                localStorage.setItem('recipeData', JSON.stringify(response.data));
+              } else {
+                setNoRecipes(true);
+                setSkeleton(false);
+              }
+            } else {
+              const storedData = localStorage.getItem('recipeData');
+              if (storedData) {
+                setRecipeData(JSON.parse(storedData));
+                setSkeleton(false);
+              } else {
+                setNoRecipes(true);
+                setSkeleton(false);
+              }
+            }
           }
         } catch (error) {
           console.error('Error fetching data:', error);
+          setNoRecipes(true);
+          setSkeleton(false);
         }
       };
     
       fetchData();
     
-      // Clear local storage when root endpoint is hit
       if (!isFromRecipeDetails) {
         localStorage.removeItem('recipeData');
       }
+    
       return () => {
         if (window.location.pathname === '/search-recipe') {
           localStorage.removeItem('recipeData');
         }
       };
-    }, [isFromRecipeDetails, navigate, NER]);
+    }, [isFromRecipeDetails, navigate, NER, title, searchOption]);
+    
     
     const handleDetails =(data)=>{
         if(recipeData.length>0){
-        navigate('/recipe-details', { state: { recipeData: data,NER:NER } });
+        navigate('/recipe-details', { state: { recipeData: data,NER:NER,title:title,searchOption:searchOption} });
         }
     }
     const handleBackClick=()=>{       
@@ -77,7 +115,7 @@ import Nav from "./Navbar";
         ):(
             <>
             <Nav/>
-            <button type="button"  onClick={()=>{handleBackClick()}} class="text-white mt-5 ml-5 bg-purple-700 hover:bg-purple-800 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800">
+            <button type="button"  onClick={()=>{handleBackClick()}} className="text-white mt-5 ml-5 bg-purple-700 hover:bg-purple-800 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800">
          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"  fill="white"><path d="M15.293 3.293 6.586 12l8.707 8.707 1.414-1.414L9.414 12l7.293-7.293-1.414-1.414z"/></svg>
         </button>
              <div
@@ -102,6 +140,7 @@ import Nav from "./Navbar";
                    </div>
                    <div className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
      {recipeData.map((post) => (
+      post && post._id &&
        <article
          key={post._id}
          className="flex max-w-xl flex-col items-start justify-between group"
@@ -110,18 +149,25 @@ import Nav from "./Navbar";
          }}
        >
          <div className="relative cursor-pointer">
+         {post&&post.title&&
            <h3 className="mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600">
              <span className="absolute inset-0" />
-             {post.title}
+               {post.title} 
            </h3>
+        
+        } 
+          {post&&post.directions&&
            <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">
-             {post.directions}
-           </p>
+           {post.directions}
+         </p>
+        
+        } 
+          
          </div>
        </article>
+      
      ))}
    </div>
-   
                </div>
                </div>  
                <div

@@ -2,8 +2,8 @@ import { motion } from "framer-motion";
 
 const SquishyCard = () => {
   return (
-    <section className="bg-neutral-900 px-4 py-12">
-      <div className="mx-auto w-fit">
+    <section className="bg-white px-2  py-12">
+      <div >
         <Card />
       </div>
     </section>
@@ -20,14 +20,14 @@ const Card = () => {
       }}
       variants={{
         hover: {
-          scale: 1.05,
+          scale: 1.01,
         },
       }}
-      className="relative h-96 w-80 shrink-0 overflow-hidden rounded-xl bg-indigo-500 p-8"
+      className="relative h-400 overflow-hidden rounded-xl bg-purple-800 p-8"
     >
       <div className="relative z-10 text-white">
         <span className="mb-3 block w-fit rounded-full bg-white/30 px-3 py-0.5 text-sm font-light text-white">
-          Pro
+          Sup
         </span>
         <motion.span
           initial={{ scale: 0.85 }}
@@ -40,19 +40,13 @@ const Card = () => {
             duration: 1,
             ease: "backInOut",
           }}
-          className="my-2 block origin-top-left font-mono text-6xl font-black leading-[1.2]"
+          className=" block origin-top-left font-mono text-6xl font-black leading-[1.2]"
         >
-          $299/
+          Your Recipe
           <br />
-          Month
+          Space
         </motion.span>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat, rem.
-        </p>
       </div>
-      <button className="absolute bottom-4 left-4 right-4 z-20 rounded border-2 border-white bg-white py-2 text-center font-mono font-black uppercase text-neutral-800 backdrop-blur transition-colors hover:bg-white/30 hover:text-white">
-        Get it now
-      </button>
       <Background />
     </motion.div>
   );
@@ -61,9 +55,8 @@ const Card = () => {
 const Background = () => {
   return (
     <motion.svg
-      width="320"
       height="384"
-      viewBox="0 0 320 384"
+      viewBox="0 0 220 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className="absolute inset-0 z-0"

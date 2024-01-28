@@ -5,7 +5,7 @@ import Nav from './Navbar';
 
 export default function RecipeDetails() {
     const location = useLocation();
-    const { recipeData,NER } = location.state;
+    const { recipeData,NER,title,searchOption } = location.state;
     const navigate=useNavigate();
     useEffect(()=>{
         console.log(recipeData);
@@ -17,12 +17,12 @@ export default function RecipeDetails() {
       },[recipeData])
     
     const handleBackClick=()=>{       
-         navigate('/recipe-display', { state: { NER:NER } });   
+         navigate('/recipe-display', { state: { NER:NER,title:title,searchOption:searchOption} });   
     }
     return (
       <>
   <Nav/>
-<div class="max-w-device p-6  border border-gray-200 rounded-lg scroll-smooth ">
+<div className="max-w-device p-6  border border-gray-200 rounded-lg scroll-smooth ">
 <div
           className="absolute inset-x-0 -top-10 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
           aria-hidden="true"
@@ -35,7 +35,7 @@ export default function RecipeDetails() {
             }}
           />
   </div>    
-<button type="button"  onClick={()=>{handleBackClick()}} class="text-white mb-5 bg-purple-700 hover:bg-purple-800 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800">
+<button type="button"  onClick={()=>{handleBackClick()}} className="text-white mb-5 bg-purple-700 hover:bg-purple-800 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800">
 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"  fill="white"><path d="M15.293 3.293 6.586 12l8.707 8.707 1.414-1.414L9.414 12l7.293-7.293-1.414-1.414z"/></svg></button>
           <div className="px-4 sm:px-0">
             <h3 className="text-4xl font-bold leading-10 text-gray-900 ">Recipe Details</h3>
@@ -67,10 +67,10 @@ export default function RecipeDetails() {
               <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                 <dt className="text-sm font-medium leading-6 text-gray-900">Directions</dt>
                 <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                <ul class="space-y-4 text-left text-gray-500 dark:text-gray-400">
+                <ul className="space-y-4 text-left text-gray-500 dark:text-gray-400">
                     {recipeData.directions.map((ingredient, index) => (
-                    <li key={index} class="flex items-center space-x-3 rtl:space-x-reverse">
-                        <svg class="flex-shrink-0 w-3.5 h-3.5 text-green-500 dark:text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
+                    <li key={index} className="flex items-center space-x-3 rtl:space-x-reverse">
+                        <svg className="flex-shrink-0 w-3.5 h-3.5 text-green-500 dark:text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
                         <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 5.917 5.724 10.5 15 1.5"/>
                         </svg>
                         <span>{ingredient}</span>

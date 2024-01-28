@@ -6,3 +6,9 @@
     font-family: Barcelony;
     src: url("../public/Barcelony.ttf") format("truetype");
   }
+
+  @layer base {
+    html {
+      scroll-behavior: smooth;
+    }
+  }

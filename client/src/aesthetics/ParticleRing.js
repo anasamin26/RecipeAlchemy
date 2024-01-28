@@ -4,6 +4,8 @@ import { OrbitControls, Sphere } from "@react-three/drei";
 import { pointsInner, pointsOuter } from "./utils";
 import { useNavigate } from "react-router-dom";
 import ForgotPasswordModal from "../components/auth/ForgotPassword";
+import { useAuth } from '../components/auth/AuthContext';
+import axios from "axios";
 
 const ParticleRing = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,6 +13,23 @@ const ParticleRing = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
+  const [password,setPassword]=useState('');
+  const { login } = useAuth();
+
+
+  const handleSignIn = async () => {
+    console.log("Inside Login");
+    try {
+      const response = await axios.post("http://localhost:8080/signin", { email, password }, { withCredentials: true });
+      if (response.data.success) {
+        console.log("login success")
+      login(); 
+      navigate('/search-recipe');
+      } 
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const validateEmail = () => {
     if (!email.includes('@') || !email.includes('.com' )) {
@@ -74,10 +93,12 @@ const ParticleRing = () => {
                   placeholder="Password"
                   type={show ? 'password' : 'text'}
                   className="text-sm text-black-200 px-4 py-3 rounded-lg w-full bg-gray-200 focus:bg-gray-100 border border-gray-200 focus:outline-none focus:border-purple-400"
-                />
+                  onChange={(e) => setPassword(e.target.value)}
+                  value={password}
+               />
                 <div className="flex items-center absolute inset-y-0 right-0 mr-3 text-sm leading-5">
                   <svg
-                    onClick="{show = !show}"
+                    onClick={() => setShow(!show)}
                     className="{{{'hidden': !show, 'block': show}}"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -89,7 +110,6 @@ const ParticleRing = () => {
                     ></path>
                   </svg>
                   <svg
-                    onClick="{show = !show}"
                     className="{{{'block': !show, 'hidden': show}}"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -114,23 +134,21 @@ const ParticleRing = () => {
                   <ForgotPasswordModal isOpen={isOpen} setIsOpen={setIsOpen}/>
                 </div>
               </div>
-              <div>
-                <button
-                  type="submit"
+              <div
                   className="w-full flex justify-center bg-purple-800 hover:bg-purple-700 text-gray-100 p-3 rounded-lg tracking-wide font-semibold cursor-pointer transition ease-in duration-500"
-                >
+               onClick={handleSignIn}
+               >
                   Sign in
-                </button>
               </div>
               <div className="flex items-center justify-center space-x-2 my-5">
-                <span className="h-px w-16 bg-gray-100"></span>
-                <span className="text-gray-300 font-normal">or</span>
-                <span className="h-px w-16 bg-gray-100"></span>
+                <span className="h-px w-16 bg-gray-300"></span>
+                <span className="text-gray-500 font-normal">or</span>
+                <span className="h-px w-16 bg-gray-300"></span>
               </div>
               <div className="flex justify-center gap-5 w-full">
                 <button
                   type="submit"
-                  className="w-full flex items-center justify-center mb-6 md:mb-0 border border-gray-300 hover:border-gray-900 hover:bg-gray-900 text-sm text-gray-500 p-3 rounded-lg tracking-wide font-medium cursor-pointer transition ease-in duration-500"
+                  className="w-full flex items-center justify-center mb-6 md:mb-0 hover:text-white border border-gray-300 hover:border-gray-900 hover:bg-gray-900 text-sm text-gray-500 p-3 rounded-lg tracking-wide font-medium cursor-pointer transition ease-in duration-500"
                 >
                   <svg
                     className="w-4 mr-2"
@@ -168,7 +186,7 @@ const ParticleRing = () => {
       </div>
       </div>
       </div>
-      
+      {/* mobile view */}
       <div className="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%]  ">
       <div className="  bottom-0 mt-40 leading-5 h-full w-full overflow-hidden lg:hidden">
       <div className="relative min-h-screen sm:flex sm:flex-row justify-center bg-transparent rounded-3xl shadow-xl">
@@ -178,9 +196,9 @@ const ParticleRing = () => {
           </div>
         </div>
         <div className="flex justify-center self-center z-10 ">
-          <div className="p-12 bg-white opacity-95 mx-auto rounded-3xl w-96">
+          <div className="p-12 bg-purple-200 opacity-95 mx-auto rounded-3xl w-96">
             <div className="mb-7">
-              <h3 className="font-semibold text-2xl text-gray-800">Sign In</h3>
+              <h3 className="font-semibold text-2xl text-black">Sign In</h3>
               <p className="text-gray-400">
                 Don't have an account? <a href="/signup"
                  className="text-sm text-purple-700 hover:text-purple-700 underline cursor-pointer underline" >Sign Up</a>
@@ -203,10 +221,10 @@ const ParticleRing = () => {
                   placeholder="Password"
                   type={show ? 'password' : 'text'}
                   className="text-sm text-black-200 px-4 py-3 rounded-lg w-full bg-gray-200 focus:bg-gray-100 border border-gray-200 focus:outline-none focus:border-purple-400"
+                  onChange={(e) => setPassword(e.target.value)}
                 />
                 <div className="flex items-center absolute inset-y-0 right-0 mr-3 text-sm leading-5">
                   <svg
-                    onClick="{show = !show}"
                     className="{{{'hidden': !show, 'block': show}}"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -218,7 +236,6 @@ const ParticleRing = () => {
                     ></path>
                   </svg>
                   <svg
-                    onClick="{show = !show}"
                     className="{{{'block': !show, 'hidden': show}}"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -244,22 +261,22 @@ const ParticleRing = () => {
                 </div>
               </div>
               <div>
-                <button
-                  type="submit"
-                  className="w-full flex justify-center bg-purple-800 hover:bg-purple-700 text-gray-100 p-3 rounded-lg tracking-wide font-semibold cursor-pointer transition ease-in duration-500"
-                >
+              <div
+                  className="w-full flex justify-center bg-purple-700 hover:bg-purple-900 text-gray-100 p-3 rounded-lg tracking-wide font-semibold cursor-pointer transition ease-in duration-500"
+               onClick={handleSignIn}
+               >
                   Sign in
-                </button>
+              </div>
               </div>
               <div className="flex items-center justify-center space-x-2 my-5">
-                <span className="h-px w-16 bg-gray-100"></span>
-                <span className="text-gray-300 font-normal">or</span>
-                <span className="h-px w-16 bg-gray-100"></span>
+                <span className="h-px w-16 bg-gray-300"></span>
+                <span className="text-gray-500 font-normal">or</span>
+                <span className="h-px w-16 bg-gray-300"></span>
               </div>
               <div className="flex justify-center gap-5 w-full">
                 <button
                   type="submit"
-                  className="w-full flex items-center justify-center mb-6 md:mb-0 border border-gray-300 hover:border-gray-900 hover:bg-gray-900 text-sm text-gray-500 p-3 rounded-lg tracking-wide font-medium cursor-pointer transition ease-in duration-500"
+                  className="w-full flex items-center justify-center mb-6 md:mb-0 border border-gray-300 bg-gray-900 hover:bg-orange-400 hover:text-black text-sm text-white p-3 rounded-lg tracking-wide font-medium cursor-pointer transition ease-in duration-500"
                 >
                   <svg
                     className="w-4 mr-2"

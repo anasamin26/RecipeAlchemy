@@ -27,11 +27,6 @@ const ShuffleHero = () => {
         }} className="bg-purple-800 text-white font-medium py-2 px-4 rounded transition-all hover:bg-purple-900 active:scale-95" >
          Take a Demo
         </button>
-        <button onClick={()=>{
-          navigate('/signin');
-        }} className=" ml-2 bg-black text-white font-medium py-2 px-4 rounded transition-all hover:bg-purple-900 active:scale-95" >
-         Sign In
-        </button>
       </div>
       <ShuffleGrid />
     </section>

@@ -9,5 +9,6 @@ module.exports = {
        secondary: "Barcelony",
     },},
   },
-  plugins: [],
+  plugins: [    require('tailwindcss-scrollbar'),
+],
 }
